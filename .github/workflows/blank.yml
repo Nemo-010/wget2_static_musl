@@ -24,7 +24,7 @@ jobs:
           # 1. Constrói a imagem usando o Dockerfile da raiz
           docker build \
             --platform "linux/amd64" \
-            -f Dockerfile \
+            -f Dockerfile.musl.static.amd64 \
             -t wget2-builder-amd64 .
 
           # 2. Cria um container temporário para extrair o binário compilado
