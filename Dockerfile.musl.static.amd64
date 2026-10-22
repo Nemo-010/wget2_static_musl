@@ -79,7 +79,7 @@ RUN cd libpsl && \
     make -j$(nproc) && make install && cd .. && rm -rf libpsl
 
 RUN git clone https://github.com/gnutls/nettle.git
-RUN cd nettle && git checkout nettle_3.10.2_release_20250626 && \
+RUN cd nettle && \
 	/bin/sh -c ".bootstrap" && \
 	./configure --disable-shared --enable-static \
 	--disable-documentation --prefix=$PREFIX && \
