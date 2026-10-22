@@ -1,0 +1,74 @@
+name: wget2_static_amd64_musl
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      ssha: ${{ steps.ssha.outputs.ssha }}
+
+    steps:
+      - name: Checkout Repository (contendo o Dockerfile)
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Wget2 using Dockerfile
+        run: |
+          mkdir -p dist
+          echo "Compilando Wget2 de forma estática com o Dockerfile..."
+          
+          # 1. Constrói a imagem usando o Dockerfile da raiz
+          docker build \
+            --platform "linux/amd64" \
+            -f Dockerfile \
+            -t wget2-builder-amd64 .
+
+          # 2. Cria um container temporário para extrair o binário compilado
+          CONTAINER_ID=$(docker create wget2-builder-amd64)
+          
+          # 3. Copia o binário 'wget2' gerado no container para a pasta dist do host
+          docker cp $CONTAINER_ID:/usr/local/bin/wget ./dist/wget2-x86_64-static
+          
+          # 4. Remove o container temporário
+          docker rm $CONTAINER_ID
+
+      - name: Set permissions for dist directory
+        run: |
+          sudo chown -R "$(id -u)":"$(id -g)" dist/
+          sudo chmod -R 755 dist/
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: wget2-binaries
+          path: 'dist/'
+
+      - name: Compute Short SHA
+        id: ssha
+        run: |
+          echo "ssha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+  release:
+    permissions: write-all
+    needs: [build]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: wget2-binaries
+
+      - name: Release to GitHub
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          title: Continuous Wget2 ${{ needs.build.outputs.ssha }}
+          automatic_release_tag: ${{ needs.build.outputs.ssha }}
+          prerelease: false
+          draft: false
+          files: |
+            *wget2*
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
