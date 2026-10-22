@@ -48,7 +48,8 @@ RUN apk add --no-cache \
     autoconf \
     automake \
     libtool \
-    git
+    git \
+	findutils
 
 ENV PREFIX=/usr/local
 ENV PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig" \
@@ -80,7 +81,7 @@ RUN cd libpsl && \
 
 RUN git clone https://github.com/gnutls/nettle.git
 RUN cd nettle && \
-	/bin/sh -c ".bootstrap" && \
+	/bin/sh -c "find -iname '*bootstrap*' | xargs -i -t -exec {} " && \
 	./configure --disable-shared --enable-static \
 	--disable-documentation --prefix=$PREFIX && \
 	make -j$(nproc) && make install && cd .. && rm -rf nettle
