@@ -73,16 +73,18 @@ RUN wget -c -q -O nettle.tar.gz "https://github.com/gnutls/nettle/archive/refs/t
 	./configure --disable-shared --enable-static --disable-documentation --prefix=$PREFIX && \
 	make -j$(nproc) && make install && cd .. && rm -rf nettle*
 
-RUN wget -q "https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.12.tar.xz" && tar axf gnutls-3.8.12.tar.xz && \
+RUN wget -q "https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.12.tar.xz" && \
+    tar axf gnutls-3.8.12.tar.xz && \
     cd gnutls-3.8.12/ && \
     ./configure --prefix=$PREFIX \
     --with-nettle-prefix=$PREFIX \
+    CPPFLAGS="-I$PREFIX/include" \
+    LDFLAGS="-L$PREFIX/lib" \
     --disable-shared --enable-static --with-included-libtasn1 \
     --with-included-unistring --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite \
     --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane --disable-hardware-acceleration \
     --disable-guile --disable-gcc-warnings && \
-    make -j$(nproc) -C lib && \
-    make -C lib install && \
+    make -j$(nproc) && \
     make install && \
     cd .. && \
     rm -rf gnutls-3.8.12/
