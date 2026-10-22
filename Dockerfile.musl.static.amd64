@@ -49,7 +49,9 @@ RUN apk add --no-cache \
     automake \
     libtool \
     git \
-	findutils
+	findutils \
+	tar \
+	gzip
 
 ENV PREFIX=/usr/local
 ENV PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig" \
