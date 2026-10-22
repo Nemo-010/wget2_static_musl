@@ -81,7 +81,7 @@ RUN cd libpsl && \
 
 RUN git clone https://git.lysator.liu.se/nettle/nettle.git
 RUN cd nettle && \
-	bash chmod +x .bootstrap && ./.bootstrap \
+	chmod +x .bootstrap && bash .bootstrap \
 	./configure --disable-shared --enable-static \
 	--disable-documentation --prefix=$PREFIX && \
 	make -j$(nproc) && make install && cd .. && rm -rf nettle
