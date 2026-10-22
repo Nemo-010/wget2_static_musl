@@ -50,7 +50,7 @@ ENV PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig" \
     LDFLAGS="-L$PREFIX/lib" \
     CFLAGS="-O2 -g"
 
-RUN git clone --recursive https://git.savannah.gnu.org/git/gnulib.git gnulib
+RUN git clone --recursive https://github.com/coreutils/gnulib.git gnulib
 ENV GNULIB_REFDIR=/usr/local/gnulib
 
 RUN wget -q -O- https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.18.tar.gz | tar xz
