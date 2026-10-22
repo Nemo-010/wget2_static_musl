@@ -41,7 +41,14 @@ RUN apk add --no-cache \
 	libmicrohttpd-dev \
 	libmicrohttpd-static \
 	build-base \
-	bash
+	bash \
+	build-base \
+    gmp-dev \
+    m4 \
+    autoconf \
+    automake \
+    libtool \
+    git
 
 ENV PREFIX=/usr/local
 ENV PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig" \
@@ -73,7 +80,7 @@ RUN cd libpsl && \
 
 RUN git clone --depth 1 https://git.lysator.liu.se/nettle/nettle.git
 RUN cd nettle && git checkout nettle_3.10.2_release_20250626 && \
-	bash .bootstrap && \
+	bash ./.bootstrap && \
 	./configure --disable-shared --enable-static \
 	--disable-documentation --prefix=$PREFIX && \
 	make -j$(nproc) && make install && cd .. && rm -rf nettle
