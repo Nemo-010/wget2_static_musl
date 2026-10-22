@@ -81,7 +81,7 @@ RUN cd libpsl && \
     --enable-runtime=libidn2 --enable-builtin --prefix=$PREFIX && \
     make -j$(nproc) && make install && cd .. && rm -rf libpsl
 
-RUN wget -c -q "https://github.com/gnutls/nettle/archive/refs/tags/nettle_4.0_release_20260205.tar.gz" -O nettle.tar.gz && tar axf nettle.tar.gz \
+RUN wget -c -q "https://github.com/gnutls/nettle/archive/refs/tags/nettle_4.0_release_20260205.tar.gz" -O nettle.tar.gz && tar axf nettle.tar.gz
 RUN cd nettle* && \
 	./configure --disable-shared --enable-static \
 	--disable-documentation --prefix=$PREFIX && \
