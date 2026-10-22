@@ -51,7 +51,12 @@ RUN apk add --no-cache \
     git \
 	findutils \
 	tar \
-	gzip
+	gzip \
+	gmp-dev \
+    libtasn1-dev \
+    nettle-dev \
+    zlib-dev \
+    pkgconf
 
 ENV PREFIX=/usr/local
 ENV PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig" \
