@@ -61,7 +61,7 @@ ENV PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig" \
     CFLAGS="-O2 -g"
 
 RUN wget -c -q -O nettle.tar.gz "https://github.com/gnutls/nettle/archive/refs/tags/nettle_4.0_release_20260205.tar.gz" && tar axf nettle.tar.gz && \
-	cd nettle* && \
+	cd nettle* && bash .bootstrap && \
 	./configure --disable-shared --enable-static --disable-documentation --prefix=$PREFIX && \
 	make -j$(nproc) && make install && cd .. && rm -rf nettle*
 
