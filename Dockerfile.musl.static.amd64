@@ -125,7 +125,7 @@ RUN cd zlib-ng && \
 # against libgnutls.a needs them passed explicitly via LIBS.
 RUN git clone https://gitlab.com/gnuwget/wget2.git
 RUN cd wget2 && ./bootstrap --skip-po && \
-	LDFLAGS="-static" CFLAGS="-O2 -DNGHTTP2_STATICLIB" \
+	LDFLAGS="-static --static" CFLAGS="-O2 -DNGHTTP2_STATICLIB" \
 	LIBS="-lhogweed -lnettle -lgmp" \
 	PKG_CONFIG="pkg-config --static" \
 	./configure --disable-shared --enable-static --without-gpgme && \
