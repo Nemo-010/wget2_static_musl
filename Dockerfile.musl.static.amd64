@@ -57,7 +57,7 @@ ENV PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig" \
     LDFLAGS="-L$PREFIX/lib" \
     CFLAGS="-O2 -g"
 
-RUN git clone --depth 1 https://github.com/coreutils/gnulib.git gnulib
+RUN git clone https://github.com/coreutils/gnulib.git gnulib
 ENV GNULIB_REFDIR=/usr/local/gnulib
 
 # Nettle 4.0 changed the nettle_cipher_func signature; GnuTLS gained support
@@ -108,14 +108,14 @@ RUN cd libidn2-* && \
     --disable-gcc-warnings --prefix=$PREFIX && \
     make -j$(nproc) && make install && cd .. && rm -rf libidn2-*
 
-RUN git clone --depth 1 --recursive https://github.com/rockdaboot/libpsl.git
+RUN git clone --recursive https://github.com/rockdaboot/libpsl.git
 RUN cd libpsl && \
     ./autogen.sh && \
     ./configure --disable-shared --enable-static \
     --enable-runtime=libidn2 --enable-builtin --prefix=$PREFIX && \
     make -j$(nproc) && make install && cd .. && rm -rf libpsl
 
-RUN git clone --depth 1 https://github.com/zlib-ng/zlib-ng
+RUN git clone https://github.com/zlib-ng/zlib-ng
 RUN cd zlib-ng && \
 	CFLAGS="-O2" \
 	./configure --prefix=$PREFIX --static --zlib-compat && \
@@ -123,7 +123,7 @@ RUN cd zlib-ng && \
 
 # gnutls.pc does not list nettle/hogweed in Requires.private, so a static link
 # against libgnutls.a needs them passed explicitly via LIBS.
-RUN git clone --depth 1 https://gitlab.com/gnuwget/wget2.git
+RUN git clone https://gitlab.com/gnuwget/wget2.git
 RUN cd wget2 && ./bootstrap --skip-po && \
 	LDFLAGS="-static" CFLAGS="-O2 -DNGHTTP2_STATICLIB" \
 	LIBS="-lhogweed -lnettle -lgmp" \
