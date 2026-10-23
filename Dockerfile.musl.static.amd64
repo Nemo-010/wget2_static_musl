@@ -47,6 +47,7 @@ RUN apk add --no-cache \
 	nghttp2-static \
 	libmicrohttpd-dev \
 	libmicrohttpd-static \
+	linux-headers \
 	zlib-dev
 
 ENV PREFIX=/usr/local
